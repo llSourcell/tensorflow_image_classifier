@@ -49,9 +49,9 @@ car (score = 0.11669)
 
 Use an absolute file path for classifier and images because the script dos not support relative path (volume mounting)
 
-#Challenge
+#The Challenge
 
-Make your own classifier for scientists, then post a clone of this repo with your attached model (you can name it retrained_graph.pb and it will be around 80 MB. If it's too big for GitHub, upload it to DropBox and post the link in your README)
+Make your own classifier for scientists, then post a clone of this repo with your retrained model in it. (you can name it retrained_graph.pb and it will be around 80 MB. If it's too big for GitHub, upload it to DropBox and post the link to it in your README)
 
 #Credits
 
