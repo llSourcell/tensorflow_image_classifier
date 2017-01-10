@@ -3,9 +3,9 @@ from shutil import copyfile
 from os import listdir
 from os.path import isfile, join
 
-var_path = '/toScan'
+src_dir = '/toScan'
 dest_dir = '/scanned'
-img_files = [f for f in listdir(var_path) if isfile(join(var_path, f))]
+img_files = [f for f in listdir(src_dir) if isfile(join(src_dir, f))]
 
 # Loads label file, strips off carriage return
 label_lines = [line.rstrip() for line
@@ -22,7 +22,7 @@ with tf.Session() as sess:
     softmax_tensor = sess.graph.get_tensor_by_name('final_result:0')
 
     for image_file in img_files:
-        src_image_path = join(var_path, image_file)
+        src_image_path = join(src_dir, image_file)
         image_data =  tf.gfile.FastGFile(src_image_path, 'rb').read()
 
         print src_image_path
