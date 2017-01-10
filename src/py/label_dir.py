@@ -18,7 +18,7 @@ imgFiles = [f for f in listdir(varPath) if isfile(join(varPath, f))]
 
 
 # Loads label file, strips off carriage return
-label_lines = [line.rstrip() for line 
+label_lines = [line.rstrip() for line
                    in tf.gfile.GFile("/tf_files/retrained_labels.txt")]
 
 # Unpersists graph from file
@@ -35,14 +35,14 @@ with tf.Session() as sess:
     #except:
     #    None
     #mkdir ('scanned')
- 
+
     for imageFile in imgFiles:
-        image_data =  tf.gfile.FastGFile(varPath+"/"+imageFile, 'rb').read()       
+        image_data =  tf.gfile.FastGFile(varPath+"/"+imageFile, 'rb').read()
 
         print (varPath+"/"+imageFile)
         predictions = sess.run(softmax_tensor, \
                  {'DecodeJpeg/contents:0': image_data})
-        
+
         # Sort to show labels of first prediction in order of confidence
         top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
         firstElt = top_k[0];
