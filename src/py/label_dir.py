@@ -13,16 +13,16 @@ from os import mkdir
 from shutil import copyfile
 from os.path import isfile, join
 var_path = '/toScan'
-dest_dir = "/scanned"
+dest_dir = '/scanned'
 img_files = [f for f in listdir(var_path) if isfile(join(var_path, f))]
 
 
 # Loads label file, strips off carriage return
 label_lines = [line.rstrip() for line
-                   in tf.gfile.GFile("/tf_files/retrained_labels.txt")]
+                   in tf.gfile.GFile('/tf_files/retrained_labels.txt')]
 
 # Unpersists graph from file
-with tf.gfile.FastGFile("/tf_files/retrained_graph.pb", 'rb') as f:
+with tf.gfile.FastGFile('/tf_files/retrained_graph.pb', 'rb') as f:
     graph_def = tf.GraphDef()
     graph_def.ParseFromString(f.read())
     _ = tf.import_graph_def(graph_def, name='')
@@ -47,7 +47,7 @@ with tf.Session() as sess:
         top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
         firstElt = top_k[0];
 
-        new_file_name = label_lines[firstElt] +"--"+ str(predictions[0][firstElt])[2:7]+".jpg"
+        new_file_name = label_lines[firstElt] +'--'+ str(predictions[0][firstElt])[2:7]+'.jpg'
         print(new_file_name)
         copyfile(join(var_path, image_file), join(dest_dir, new_file_name))
 
