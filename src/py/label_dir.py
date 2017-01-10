@@ -1,7 +1,18 @@
+import errno
 import tensorflow as tf
-from shutil import copyfile
-from os import listdir
-from os.path import isfile, join
+from shutil import move
+from os import listdir, makedirs
+from os.path import isfile, join, isdir
+
+def mkdir_p(path):
+    try:
+        makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and isdir(path):
+            pass
+        else:
+            raise
+
 
 src_dir = '/toScan'
 dest_dir = '/scanned'
@@ -25,7 +36,7 @@ with tf.Session() as sess:
         src_image_path = join(src_dir, image_file)
         image_data =  tf.gfile.FastGFile(src_image_path, 'rb').read()
 
-        print src_image_path
+        print(src_image_path)
         predictions = sess.run(softmax_tensor, \
                  {'DecodeJpeg/contents:0': image_data})
 
@@ -33,9 +44,14 @@ with tf.Session() as sess:
         top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
         firstElt = top_k[0];
 
-        new_file_name = label_lines[firstElt] +'--'+ str(predictions[0][firstElt])[2:7]+'.jpg'
-        print(new_file_name)
-        copyfile(src_image_path, join(dest_dir, new_file_name))
+        label_dest_folder = join(dest_dir, label_lines[firstElt])
+        mkdir_p(label_dest_folder)
+
+        final_file_path = join(label_dest_folder, image_file)
+
+        print(final_file_path)
+
+        move(src_image_path, final_file_path)
 
         for node_id in top_k:
             human_string = label_lines[node_id]
