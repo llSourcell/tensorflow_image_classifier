@@ -37,9 +37,10 @@ with tf.Session() as sess:
     #mkdir ('scanned')
 
     for image_file in img_files:
-        image_data =  tf.gfile.FastGFile(join(var_path, image_file), 'rb').read()
+        src_image_path = join(var_path, image_file)
+        image_data =  tf.gfile.FastGFile(src_image_path, 'rb').read()
 
-        print join(var_path, image_file)
+        print src_image_path
         predictions = sess.run(softmax_tensor, \
                  {'DecodeJpeg/contents:0': image_data})
 
@@ -49,7 +50,7 @@ with tf.Session() as sess:
 
         new_file_name = label_lines[firstElt] +'--'+ str(predictions[0][firstElt])[2:7]+'.jpg'
         print(new_file_name)
-        copyfile(join(var_path, image_file), join(dest_dir, new_file_name))
+        copyfile(src_image_path, join(dest_dir, new_file_name))
 
         for node_id in top_k:
             human_string = label_lines[node_id]
