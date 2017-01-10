@@ -17,6 +17,8 @@ def mkdir_p(path):
 src_dir = '/toScan'
 dest_dir = '/scanned'
 img_files = [f for f in listdir(src_dir) if isfile(join(src_dir, f))]
+issue_dir = join(dest_dir, '_issues')
+mkdir_p(issue_dir)
 
 # Loads label file, strips off carriage return
 label_lines = [line.rstrip() for line
@@ -37,8 +39,14 @@ with tf.Session() as sess:
         image_data =  tf.gfile.FastGFile(src_image_path, 'rb').read()
 
         print(src_image_path)
-        predictions = sess.run(softmax_tensor, \
-                 {'DecodeJpeg/contents:0': image_data})
+
+        try:
+
+            predictions = sess.run(softmax_tensor, \
+                     {'DecodeJpeg/contents:0': image_data})
+        except Exception as e:
+            move(srcFilePath, join(issue_dir, imageFile))
+            continue
 
         # Sort to show labels of first prediction in order of confidence
         top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
