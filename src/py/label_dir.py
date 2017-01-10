@@ -12,9 +12,9 @@ from os import listdir
 from os import mkdir
 from shutil import copyfile
 from os.path import isfile, join
-varPath = '/toScan'
-destDir = "/scanned"
-imgFiles = [f for f in listdir(varPath) if isfile(join(varPath, f))]
+var_path = '/toScan'
+dest_dir = "/scanned"
+img_files = [f for f in listdir(var_path) if isfile(join(var_path, f))]
 
 
 # Loads label file, strips off carriage return
@@ -31,15 +31,15 @@ with tf.Session() as sess:
     # Feed the image_data as input to the graph and get first prediction
     softmax_tensor = sess.graph.get_tensor_by_name('final_result:0')
     #try:
-    #    shutil.rmtree(destDir)
+    #    shutil.rmtree(dest_dir)
     #except:
     #    None
     #mkdir ('scanned')
 
-    for imageFile in imgFiles:
-        image_data =  tf.gfile.FastGFile(varPath+"/"+imageFile, 'rb').read()
+    for image_file in img_files:
+        image_data =  tf.gfile.FastGFile(var_path+"/"+image_file, 'rb').read()
 
-        print (varPath+"/"+imageFile)
+        print (var_path+"/"+image_file)
         predictions = sess.run(softmax_tensor, \
                  {'DecodeJpeg/contents:0': image_data})
 
@@ -47,9 +47,9 @@ with tf.Session() as sess:
         top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
         firstElt = top_k[0];
 
-        newFileName = label_lines[firstElt] +"--"+ str(predictions[0][firstElt])[2:7]+".jpg"
-        print(newFileName)
-        copyfile(varPath+"/"+imageFile, destDir+"/"+newFileName)
+        new_file_name = label_lines[firstElt] +"--"+ str(predictions[0][firstElt])[2:7]+".jpg"
+        print(new_file_name)
+        copyfile(var_path+"/"+image_file, dest_dir+"/"+new_file_name)
 
         for node_id in top_k:
             human_string = label_lines[node_id]
