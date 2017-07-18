@@ -4,7 +4,7 @@ This is the code for 'Image Classifier in TensorFlow in 5 Min on [YouTube](https
 
 ## Requirements
 
-* [docker](https://www.docker.com/products/docker-toolbox)
+* [Docker](https://www.docker.com/products/docker-toolbox)
 
 ## Usage 
 
@@ -26,16 +26,16 @@ Just type
 ```
  ./train.sh [any_path]/my_own_classifier
 ``` 
-And it will do anything for you !
+And it will do everything for you !
 
 ## Guess process
 
-Just type for a single guess
+For a single guess, just type:
 ```
  ./guess.sh [any_path]/my_own_classifier /yourfile.jpg
 ```
 
-To guess an entire directory
+To guess an entire directory:
 ```
 ./guessDir.sh [any_path]/classifier [any_path]/srcDir [any_path]/destDir
 ```
